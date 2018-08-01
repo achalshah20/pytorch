@@ -42,22 +42,22 @@ if(CUDA_FOUND)
     message(FATAL_ERROR "Caffe2: Couldn't determine version from header: " ${output_var})
   endif()
   message(STATUS "Caffe2: Header version is: " ${cuda_version_from_header})
-  if(NOT ${cuda_version_from_header} STREQUAL ${CUDA_VERSION})
-    # Force CUDA to be processed for again next time
-    # TODO: I'm not sure if this counts as an implementation detail of
-    # FindCUDA
-    set(${cuda_version_from_findcuda} ${CUDA_VERSION})
-    unset(CUDA_TOOLKIT_ROOT_DIR_INTERNAL CACHE)
-    # Not strictly necessary, but for good luck.
-    unset(CUDA_VERSION CACHE)
-    # Error out
-    message(FATAL_ERROR "FindCUDA says CUDA version is ${cuda_version_from_findcuda} (usually determined by nvcc), "
-      "but the CUDA headers say the version is ${cuda_version_from_header}.  This often occurs "
-      "when you set both CUDA_HOME and CUDA_NVCC_EXECUTABLE to "
-      "non-standard locations, without also setting PATH to point to the correct nvcc.  "
-      "Perhaps, try re-running this command again with PATH=${CUDA_TOOLKIT_ROOT_DIR}/bin:$PATH.  "
-      "See above log messages for more diagnostics, and see https://github.com/pytorch/pytorch/issues/8092 for more details.")
-  endif()
+  # if(NOT ${cuda_version_from_header} STREQUAL ${CUDA_VERSION})
+  #   # Force CUDA to be processed for again next time
+  #   # TODO: I'm not sure if this counts as an implementation detail of
+  #   # FindCUDA
+  #   set(${cuda_version_from_findcuda} ${CUDA_VERSION})
+  #   unset(CUDA_TOOLKIT_ROOT_DIR_INTERNAL CACHE)
+  #   # Not strictly necessary, but for good luck.
+  #   unset(CUDA_VERSION CACHE)
+  #   # Error out
+  #   message(FATAL_ERROR "FindCUDA says CUDA version is ${cuda_version_from_findcuda} (usually determined by nvcc), "
+  #     "but the CUDA headers say the version is ${cuda_version_from_header}.  This often occurs "
+  #     "when you set both CUDA_HOME and CUDA_NVCC_EXECUTABLE to "
+  #     "non-standard locations, without also setting PATH to point to the correct nvcc.  "
+  #     "Perhaps, try re-running this command again with PATH=${CUDA_TOOLKIT_ROOT_DIR}/bin:$PATH.  "
+  #     "See above log messages for more diagnostics, and see https://github.com/pytorch/pytorch/issues/8092 for more details.")
+  # endif()
 endif()
 
 # Find cuDNN.
@@ -341,7 +341,7 @@ endforeach()
 # Set C++11 support
 set(CUDA_PROPAGATE_HOST_FLAGS_BLACKLIST "-Werror")
 if (NOT MSVC)
-  list(APPEND CUDA_NVCC_FLAGS "-std=c++11")
+  list(APPEND CUDA_NVCC_FLAGS "$<$<COMPILE_LANGUAGE:CUDA>:-std=c++11>")
   list(APPEND CUDA_NVCC_FLAGS "-Xcompiler -fPIC")
 endif()
 

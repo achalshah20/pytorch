@@ -7,7 +7,7 @@ if(THREADS_FOUND AND NOT TARGET Threads::Threads)
   if(THREADS_HAVE_PTHREAD_ARG)
     set_property(
         TARGET Threads::Threads
-        PROPERTY INTERFACE_COMPILE_OPTIONS "-pthread")
+        PROPERTY INTERFACE_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:-pthread>")
   endif()
 
   if(CMAKE_THREAD_LIBS_INIT)
