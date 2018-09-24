@@ -981,7 +981,7 @@ if(NOT CUDA_VERSION VERSION_LESS "3.2")
     find_cuda_helper_libs(nvcuvid)
   endif()
 endif()
-if(CUDA_VERSION VERSION_GREATER "5.0")
+if(CUDA_VERSION VERSION_GREATER "5.0" AND CUDA_VERSION VERSION_LESS "9.2")
   find_cuda_helper_libs(cublas_device)
 endif()
 
